@@ -56,7 +56,7 @@ ansiEffects = [
 def setVars(returnTxt):
     if "[rmem]" in returnTxt:
         returnTxt = ' '.join(str(x) for x in returnTxt)
-        return returnTxt.replace("[rmem]", storage.membuffer[storage.mempos])
+        return returnTxt.replace("[rmem]", str(storage.membuffer[storage.mempos]))
     else:
         return ' '.join(str(x) for x in returnTxt)
     
@@ -86,6 +86,20 @@ def checkLine(line):
                 storage.mempos += 1
                 if not storage.mempos + 1 in storage.membuffer:
                     storage.membuffer[storage.mempos + 1] = 0
+            elif op == "+":
+                try:
+                    if not storage.mempos in storage.membuffer:
+                        storage.membuffer[storage.mempos] = 0
+                    storage.membuffer[storage.mempos] += 1
+                except:
+                    TypeError("E: Selected memory position is not type int, therefore it cannot be manupulated with + or -.")
+            elif op == "-":
+                try:
+                    if not storage.mempos in storage.membuffer:
+                        storage.membuffer[storage.mempos] = 0
+                    storage.membuffer[storage.mempos] -= 1
+                except:
+                    TypeError("E: Selected memory position is not type int, therefore it cannot be manupulated with + or -.")
 
     if "setmem" in line:
         valueToSet = line.split()[1:]
