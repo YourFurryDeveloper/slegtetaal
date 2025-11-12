@@ -53,6 +53,13 @@ ansiEffects = [
     "\033[107m"  # Bright Background White
 ]
 
+def setVars(returnTxt):
+    if "[rmem]" in returnTxt:
+        returnTxt = ' '.join(str(x) for x in returnTxt)
+        return returnTxt.replace("[rmem]", storage.membuffer[storage.mempos])
+    else:
+        return ' '.join(str(x) for x in returnTxt)
+    
 def checkLine(line):
     if "gt" in line:
         gtLine = int(line.split()[1]) - 1
@@ -62,13 +69,7 @@ def checkLine(line):
     if "prnt" in line:
         txtEffect = int(line.split()[1])
         txtToPrint = line.split()[2:]
-        if "[rmem]" in txtToPrint:
-            txtToPrint = ' '.join(str(x) for x in txtToPrint)
-            txtToPrint = txtToPrint.replace("[rmem]", storage.membuffer[storage.mempos])
-        else:
-            txtToPrint = ' '.join(str(x) for x in txtToPrint)
-
-        print(f"{ansiEffects[txtEffect]}{txtToPrint}{RESET}")
+        print(f"{ansiEffects[txtEffect]}{setVars(txtToPrint)}{RESET}")
 
     if "wait" in line:
         waitS = float(line.split()[1])
@@ -88,5 +89,4 @@ def checkLine(line):
 
     if "setmem" in line:
         valueToSet = line.split()[1:]
-        valueToSet = ' '.join(str(x) for x in valueToSet)
-        storage.membuffer[storage.mempos] = valueToSet
+        storage.membuffer[storage.mempos] = setVars(valueToSet)
