@@ -57,7 +57,7 @@ def checkLine(line):
     if "gt" in line:
         gtLine = int(line.split()[1]) - 1
         storage.curLine = gtLine
-        #checkLine(storage.codebuffer[gtLine])
+        checkLine(storage.codebuffer[gtLine])
 
     if "prnt" in line:
         txtEffect = int(line.split()[1])
